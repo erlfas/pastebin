@@ -1,5 +1,5 @@
-/Users/erlend321/NetBeansProjects/pastebin/src/main/java/no/tollpost/dds/pastebin/PastebinApplication.java
-/Users/erlend321/NetBeansProjects/pastebin/src/main/java/no/tollpost/dds/pastebin/PasteService.java
-/Users/erlend321/NetBeansProjects/pastebin/src/main/java/no/tollpost/dds/pastebin/HomeController.java
-/Users/erlend321/NetBeansProjects/pastebin/src/main/java/no/tollpost/dds/pastebin/Paste.java
-/Users/erlend321/NetBeansProjects/pastebin/src/main/java/no/tollpost/dds/pastebin/PasteRepository.java
+/Users/erlend321/NetBeansProjects/pastebin/src/main/java/no/fasmer/pastebin/HomeController.java
+/Users/erlend321/NetBeansProjects/pastebin/src/main/java/no/fasmer/pastebin/PasteService.java
+/Users/erlend321/NetBeansProjects/pastebin/src/main/java/no/fasmer/pastebin/PasteRepository.java
+/Users/erlend321/NetBeansProjects/pastebin/src/main/java/no/fasmer/pastebin/Paste.java
+/Users/erlend321/NetBeansProjects/pastebin/src/main/java/no/fasmer/pastebin/PastebinApplication.java

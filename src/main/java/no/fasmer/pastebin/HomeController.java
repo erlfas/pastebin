@@ -1,4 +1,4 @@
-package no.tollpost.dds.pastebin;
+package no.fasmer.pastebin;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Controller
@@ -35,12 +34,6 @@ public class HomeController {
         return pasteService.findOnePaste(filename)
                 .map(paste -> ResponseEntity.ok().body(paste));
     }
-    
-//    @PostMapping(value = BASE_PATH)
-//    public Mono<String> createFile(Flux<Paste> pastes, Model model) { 
-//        model.addAttribute("paste", new Paste());
-//        return pasteService.createPaste(pastes).then(Mono.just("redirect:/"));
-//    }
     
     @PostMapping(value = BASE_PATH)
     public Mono<String> createFile(Paste paste, Model model) { 

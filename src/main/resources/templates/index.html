@@ -2,18 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
-        <title>Learning Spring Boot: Spring-a-Gram</title>
+        <title>Pastebin</title>
         <link rel="stylesheet" href="/main.css" />
     </head>
     <body>
 
-        <h1>Learning Spring Boot - 2nd Edition</h1>
+        <h1>Pastebin</h1>
 
         <div>
             <table>
                 <thead>
                     <tr>
                         <th>Id</th>
+                        <th>Name</th>
+                        <th>Expiration</th>
                         <th>Message</th>
                         <th></th>
                     </tr>
@@ -21,6 +23,8 @@
                 <tbody>
                     <tr th:each="paste : ${pastes}">
                         <td th:text="${paste.id}" />
+                        <td th:text="${paste.name}" />
+                        <td th:text="${paste.expiration}" />
                         <td th:text="${paste.message}" />
                         <td>
                             <form th:method="delete"

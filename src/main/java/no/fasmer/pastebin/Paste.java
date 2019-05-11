@@ -1,4 +1,4 @@
-package no.tollpost.dds.pastebin;
+package no.fasmer.pastebin;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

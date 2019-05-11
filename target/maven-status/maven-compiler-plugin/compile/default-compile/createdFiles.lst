@@ -1,6 +1,6 @@
-no/tollpost/dds/pastebin/PasteService$InitDatabase.class
-no/tollpost/dds/pastebin/Paste.class
-no/tollpost/dds/pastebin/HomeController.class
-no/tollpost/dds/pastebin/PastebinApplication.class
-no/tollpost/dds/pastebin/PasteService.class
-no/tollpost/dds/pastebin/PasteRepository.class
+no/fasmer/pastebin/PasteService.class
+no/fasmer/pastebin/Paste.class
+no/fasmer/pastebin/PasteService$InitDatabase.class
+no/fasmer/pastebin/HomeController.class
+no/fasmer/pastebin/PastebinApplication.class
+no/fasmer/pastebin/PasteRepository.class

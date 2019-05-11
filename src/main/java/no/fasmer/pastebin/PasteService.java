@@ -1,16 +1,10 @@
-package no.tollpost.dds.pastebin;
+package no.fasmer.pastebin;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.UUID;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,12 +26,7 @@ public class PasteService {
     }
 
     public Mono<Void> createPaste(Paste paste) {
-        
         return pasteRepository.save(paste).then();
-        
-//        return pastes
-//                .flatMap(pasteRepository::save)
-//                .then();
     }
 
     public Mono<Void> deletePaste(String id) {
