@@ -48,7 +48,7 @@ public class HomeController {
 
     @DeleteMapping(value = BASE_PATH + "/" + ID)
     public Mono<String> deleteFile(@PathVariable String id) {
-        return pasteService.deletePaste(id).then(Mono.just("redirect:/"));
+        return pasteService.deletePaste(id).then(Mono.just("redirect:/overview"));
     }
     
 }
