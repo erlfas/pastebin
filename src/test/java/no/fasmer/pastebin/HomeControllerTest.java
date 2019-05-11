@@ -3,6 +3,7 @@ package no.fasmer.pastebin;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -27,6 +28,25 @@ public class HomeControllerTest {
 
     @MockBean
     PasteService pasteService;
+    
+    @Test
+    public void createPasteShouldWork() {
+        // given
+        final Paste paste = new Paste(null, "name1", "1h", "message 1");
+        given(pasteService.createPaste(any())).willReturn(Mono.just(new Paste("id1", "name1", "1h", "message 1")));
+        
+        // when
+        final EntityExchangeResult<String> result = webClient
+                .post().uri("/pastes").body(Mono.just(paste), Paste.class)
+                .exchange()
+                .expectStatus().isSeeOther()
+                .expectBody(String.class).returnResult();
+        
+        // then
+        verify(pasteService).createPaste(any());
+        verifyNoMoreInteractions(pasteService);
+        assertThat(result.getResponseBody()).isNull();
+    }
     
     @Test
     public void onePasteRouteShouldWork() {
