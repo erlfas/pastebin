@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Pastebin</title>
+        <link rel="stylesheet" href="/main.css" />
+    </head>
+    <body>
+
+        <h1>Pastebin</h1>
+
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Expiration</th>
+                        <th>Message</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="paste : ${pastes}">
+                        <td th:text="${paste.id}" />
+                        <td th:text="${paste.name}" />
+                        <td th:text="${paste.expiration}" />
+                        <td th:text="${paste.message}" />
+                        <td>
+                            <form th:method="delete"
+                                  th:action="@{'/pastes/' + ${paste.id}}">
+                                <input type="submit" value="Delete" />
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </body>
+</html>

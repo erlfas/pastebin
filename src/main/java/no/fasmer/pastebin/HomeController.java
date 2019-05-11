@@ -23,15 +23,20 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public Mono<String> fillModel(Model model) {
-        model.addAttribute("pastes", pasteService.findAllPastes());
+    public Mono<String> paste(Model model) {
         model.addAttribute("paste", new Paste());
         return Mono.just("index");
     }
+    
+    @GetMapping("/overview")
+    public Mono<String> overview(Model model) {
+        model.addAttribute("pastes", pasteService.findAllPastes());
+        return Mono.just("overview");
+    }
 
     @GetMapping(value = BASE_PATH + "/" + ID, produces = MediaType.TEXT_PLAIN_VALUE)
-    public Mono<ResponseEntity<?>> onePaste(@PathVariable String filename) {
-        return pasteService.findOnePaste(filename)
+    public Mono<ResponseEntity<?>> onePaste(@PathVariable String id) {
+        return pasteService.findOnePaste(id)
                 .map(paste -> ResponseEntity.ok().body(paste));
     }
     
