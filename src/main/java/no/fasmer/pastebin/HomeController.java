@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 public class HomeController {
 
     private static final String BASE_PATH = "/pastes";
-    private static final String FILENAME = "{filename:.+}";
+    private static final String ID = "{id:.+}";
 
     private final PasteService pasteService;
 
@@ -29,7 +29,7 @@ public class HomeController {
         return Mono.just("index");
     }
 
-    @GetMapping(value = BASE_PATH + "/" + FILENAME, produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(value = BASE_PATH + "/" + ID, produces = MediaType.TEXT_PLAIN_VALUE)
     public Mono<ResponseEntity<?>> onePaste(@PathVariable String filename) {
         return pasteService.findOnePaste(filename)
                 .map(paste -> ResponseEntity.ok().body(paste));
@@ -41,7 +41,7 @@ public class HomeController {
         return pasteService.createPaste(paste).then(Mono.just("redirect:/"));
     }
 
-    @DeleteMapping(value = BASE_PATH + "/" + FILENAME)
+    @DeleteMapping(value = BASE_PATH + "/" + ID)
     public Mono<String> deleteFile(@PathVariable String id) {
         return pasteService.deletePaste(id).then(Mono.just("redirect:/"));
     }
