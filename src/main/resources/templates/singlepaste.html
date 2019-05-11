@@ -8,25 +8,14 @@
     <body>
 
         <h1>Overview</h1>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Expiration</th>
-                    <th>Message</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="paste : ${aPaste}">
-                    <td th:text="${paste.id}" />
-                    <td th:text="${paste.name}" />
-                    <td th:text="${paste.expiration}" />
-                    <td th:text="${paste.message}" />
-                </tr>
-            </tbody>
-        </table>
+        
+        <div th:each="paste : ${aPaste}">
+            <p>Message:</p>
+            <p><textarea th:text="${paste.message}" rows="10" cols="30" /></p>
+            <p>Id: <span th:text="${paste.id}" /></p>
+            <p>Name: <span th:text="${paste.name}" /></p>
+            <p>Expiration: <span th:text="${paste.expiration}" /></p>
+        </div>
 
     </body>
 </html>
