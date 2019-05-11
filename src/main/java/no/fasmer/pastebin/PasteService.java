@@ -24,9 +24,13 @@ public class PasteService {
     public Mono<Paste> findOnePaste(String id) {
         return pasteRepository.findById(id);
     }
+    
+    public Flux<Paste> findByName(String name) {
+        return pasteRepository.findByName(name);
+    }
 
-    public Mono<Void> createPaste(Paste paste) {
-        return pasteRepository.save(paste).then();
+    public Mono<Paste> createPaste(Paste paste) {
+        return pasteRepository.save(paste);
     }
 
     public Mono<Void> deletePaste(String id) {
@@ -38,7 +42,6 @@ public class PasteService {
 
     @Component
     public class InitDatabase {
-
         @Bean
         CommandLineRunner init(MongoOperations operations) {
             return args -> {

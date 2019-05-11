@@ -34,16 +34,21 @@ public class HomeController {
         return Mono.just("overview");
     }
 
-    @GetMapping(value = BASE_PATH + "/" + ID, produces = MediaType.TEXT_PLAIN_VALUE)
-    public Mono<ResponseEntity<?>> onePaste(@PathVariable String id) {
+    @GetMapping(value = BASE_PATH + "/" + ID)
+    public Mono<String> onePaste(@PathVariable String id, Model model) {
         return pasteService.findOnePaste(id)
-                .map(paste -> ResponseEntity.ok().body(paste));
+                .flatMap(paste -> {
+                    model.addAttribute("aPaste", paste);
+                    System.out.println("PASTE: " + paste);
+                    return Mono.just("singlepaste");
+                });
     }
     
     @PostMapping(value = BASE_PATH)
-    public Mono<String> createFile(Paste paste, Model model) { 
+    public Mono<String> createPaste(Paste paste, Model model) { 
         model.addAttribute("paste", new Paste());
-        return pasteService.createPaste(paste).then(Mono.just("redirect:/"));
+        return pasteService.createPaste(paste)
+                .map(x -> "redirect:/pastes/" + x.getId());
     }
 
     @DeleteMapping(value = BASE_PATH + "/" + ID)
