@@ -1,5 +1,8 @@
-package no.fasmer.pastebin;
+package no.fasmer.pastebin.pastes;
 
+import no.fasmer.pastebin.pastes.Paste;
+import no.fasmer.pastebin.pastes.PasteRepository;
+import no.fasmer.pastebin.pastes.PasteService;
 import static org.assertj.core.api.Assertions.tuple;
 import org.junit.Test;
 import org.junit.runner.RunWith;

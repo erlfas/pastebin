@@ -1,4 +1,4 @@
-package no.fasmer.pastebin;
+package no.fasmer.pastebin.pastes;
 
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;

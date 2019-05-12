@@ -1,5 +1,10 @@
 package no.fasmer.pastebin;
 
+import no.fasmer.pastebin.HomeController;
+import no.fasmer.pastebin.pastes.Paste;
+import no.fasmer.pastebin.pastes.Paste;
+import no.fasmer.pastebin.pastes.PasteService;
+import no.fasmer.pastebin.pastes.PasteService;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;

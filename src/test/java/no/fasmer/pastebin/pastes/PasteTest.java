@@ -1,5 +1,6 @@
-package no.fasmer.pastebin;
+package no.fasmer.pastebin.pastes;
 
+import no.fasmer.pastebin.pastes.Paste;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 

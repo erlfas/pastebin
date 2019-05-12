@@ -1,4 +1,4 @@
-package no.fasmer.pastebin;
+package no.fasmer.pastebin.pastes;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

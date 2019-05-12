@@ -1,4 +1,4 @@
-package no.fasmer.pastebin;
+package no.fasmer.pastebin.pastes;
 
 import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;

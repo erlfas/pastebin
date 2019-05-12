@@ -1,4 +1,4 @@
-package no.fasmer.pastebin;
+package no.fasmer.pastebin.pastes;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
