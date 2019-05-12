@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -28,6 +29,24 @@ public class HomeControllerTest {
 
     @MockBean
     PasteService pasteService;
+    
+    @Test
+    public void deletePasteShouldWork() {
+        // given
+        given(pasteService.deletePaste(anyString())).willReturn(Mono.empty());
+        
+        // when
+        final EntityExchangeResult<String> result = webClient
+                .delete().uri("/pastes/id1")
+                .exchange()
+                .expectStatus().isSeeOther()
+                .expectBody(String.class).returnResult();
+        
+        // then
+        verify(pasteService).deletePaste("id1");
+        verifyNoMoreInteractions(pasteService);
+        assertThat(result.getResponseBody()).isNull();
+    }
     
     @Test
     public void createPasteShouldWork() {
