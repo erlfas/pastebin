@@ -1,6 +1,8 @@
 package no.fasmer.pastebin;
 
 import no.fasmer.pastebin.HomeController;
+import no.fasmer.pastebin.comments.Comment;
+import no.fasmer.pastebin.pastes.CommentReaderRepository;
 import no.fasmer.pastebin.pastes.Paste;
 import no.fasmer.pastebin.pastes.Paste;
 import no.fasmer.pastebin.pastes.PasteService;
@@ -34,6 +36,9 @@ public class HomeControllerTest {
 
     @MockBean
     PasteService pasteService;
+    
+    @MockBean
+    CommentReaderRepository commentReaderRepository;
     
     @Test
     public void deletePasteShouldWork() {
@@ -76,7 +81,12 @@ public class HomeControllerTest {
     public void onePasteRouteShouldWork() {
         // given
         final Paste paste1 = new Paste("id1", "name1", "1h", "message 1");
+        final Comment comment = new Comment();
+        comment.setPasteId("id1");
+        comment.setId("c1");
+        comment.setComment("a comment on paste id1");
         given(pasteService.findOnePaste("id1")).willReturn(Mono.just(paste1));
+        given(commentReaderRepository.findByPasteId("id1")).willReturn(Flux.just(comment));
         
         // when
         final EntityExchangeResult<String> result = webClient

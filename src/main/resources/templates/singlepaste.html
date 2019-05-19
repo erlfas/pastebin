@@ -8,14 +8,27 @@
     <body>
 
         <h1>Your paste</h1>
-        
-        <div th:each="paste : ${aPaste}">
+
+        <div th:each="p : ${aPaste}">
             <p>Message:</p>
-            <p><textarea th:text="${paste.message}" rows="10" cols="30" /></p>
-            <p>Id: <span th:text="${paste.id}" /></p>
-            <p>Name: <span th:text="${paste.name}" /></p>
-            <p>Expiration: <span th:text="${paste.expiration}" /></p>
+            <p>Id: <span th:text="${p.id}" /></p>
+            <p>Name: <span th:text="${p.name}" /></p>
+            <p>Expiration: <span th:text="${p.expiration}" /></p>
+            <p><textarea th:text="${p.message}" rows="10" cols="30" /></p>
+            
+            <form th:method="post" th:action="@{'/comments'}"> 
+                <input name="comment" value="" type="text" /> 
+                <input name="pasteId" th:value="${p.id}" type="hidden" /> 
+                <input type="submit" /> 
+            </form> 
         </div>
 
-    </body>
+    <td> 
+
+    </td> 
+    <td> 
+
+    </td> 
+
+</body>
 </html>
