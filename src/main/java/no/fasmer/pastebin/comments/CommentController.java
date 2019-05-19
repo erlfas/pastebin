@@ -15,10 +15,10 @@ public class CommentController {
     }
     
     @PostMapping("/comments")
-    public Mono<String> addComment(Mono<Comment> newComment) {
-        return newComment.flatMap(comment -> Mono.fromRunnable(() -> {
+    public Mono<String> addComment(Comment newComment) {
+        return Mono.just(newComment).flatMap(comment -> Mono.fromRunnable(() -> {
             rabbitTemplate.convertAndSend("pastebin", "comments.new", comment);
-        })).log("commentService-Publish").then(Mono.just("redirect:/"));
+        })).log("commentService-Publish").then(Mono.just("redirect:/pastes/" + newComment.getPasteId()));
     }
     
 }

@@ -10,12 +10,16 @@
         <h1>Your paste</h1>
 
         <div th:each="p : ${aPaste}">
-            <p>Message:</p>
             <p>Id: <span th:text="${p.id}" /></p>
             <p>Name: <span th:text="${p.name}" /></p>
             <p>Expiration: <span th:text="${p.expiration}" /></p>
+            <p>Message:</p>
             <p><textarea th:text="${p.message}" rows="10" cols="30" /></p>
-            
+            <h3>Comments</h3>
+            <ul>
+                <li th:each="comment : ${p.comments}" th:text="${comment.comment}"></li>
+            </ul>
+
             <form th:method="post" th:action="@{'/comments'}"> 
                 <input name="comment" value="" type="text" /> 
                 <input name="pasteId" th:value="${p.id}" type="hidden" /> 
