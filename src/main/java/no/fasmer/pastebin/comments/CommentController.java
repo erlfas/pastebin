@@ -23,7 +23,7 @@ public class CommentController {
                 .flatMap(comment -> Mono.fromRunnable(() -> {
                     rabbitTemplate.convertAndSend("pastebin", "comments.new", comment);
                 }))
-                .log("commentService-Publish")
+                .log("commentController-AddComment")
                 .then(Mono.just(newComment))
                 .flatMap(comment -> Mono.fromRunnable(() -> {
                     meterRegistry.counter("comments.produced", "pasteId", comment.getPasteId()).increment();

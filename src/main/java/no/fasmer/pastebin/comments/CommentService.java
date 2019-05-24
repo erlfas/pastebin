@@ -1,5 +1,6 @@
 package no.fasmer.pastebin.comments;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -14,18 +15,21 @@ import org.springframework.stereotype.Service;
 public class CommentService {
 
     private final CommentWriterRepository commentWriterRepository;
+    private final MeterRegistry meterRegistry;
 
-    public CommentService(CommentWriterRepository commentWriterRepository1) {
-        this.commentWriterRepository = commentWriterRepository1;
+    public CommentService(CommentWriterRepository commentWriterRepository, MeterRegistry meterRegistry) {
+        this.commentWriterRepository = commentWriterRepository;
+        this.meterRegistry = meterRegistry;
     }
     
     @RabbitListener(bindings = @QueueBinding(value = @Queue, exchange = @Exchange(value = "pastebin"), key = "comments.new"))
-    public void save(Comment comment) {
+    public void save(Comment newComment) {
         commentWriterRepository
-                .save(comment)
+                .save(newComment)
                 .log("commentService-save")
-                .subscribe();
-        
+                .subscribe(comment -> {
+                    meterRegistry.counter("comments.consumed", "pasteId", comment.getPasteId()).increment();
+                });
     }
     
     @Bean
