@@ -7,7 +7,6 @@ import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,21 +25,22 @@ public class CommentService {
     
     @StreamListener
     @Output(CustomProcessor.OUTPUT)
-    public void save(@Input(CustomProcessor.INPUT) Flux<Comment> newComments) {
-        commentWriterRepository
+    public Mono<Void> save(@Input(CustomProcessor.INPUT) Flux<Comment> newComments) {
+        return commentWriterRepository
                 .saveAll(newComments)
                 .flatMap(comment -> {
                     meterRegistry
                             .counter("comments.consumed", "pasteId", comment.getPasteId())
                             .increment();
-                    return Mono.empty();
-                });
+                    return Mono.<Void>empty();
+                })
+                .then();
     }
     
     @Bean
-    CommandLineRunner setUp(MongoOperations mongoOperations) {
+    CommandLineRunner setUp(CommentWriterRepository repository) {
         return args -> {
-            mongoOperations.dropCollection(Comment.class);
+            repository.deleteAll().subscribe();
         };
     }
     

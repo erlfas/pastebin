@@ -1,5 +1,6 @@
 package no.fasmer.pastebin.comments;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.cloud.stream.messaging.Source;
@@ -16,35 +17,39 @@ import reactor.core.publisher.Mono;
 @Controller
 @EnableBinding(Source.class)
 public class CommentController {
-    
+
+    private final MeterRegistry meterRegistry;
     private FluxSink<Message<Comment>> commentSink;
     private Flux<Message<Comment>> flux;
-    
-    public CommentController() {
+
+    public CommentController(MeterRegistry meterRegistry) {
+        this.meterRegistry = meterRegistry;
         this.flux = Flux.<Message<Comment>>create(
                 emitter -> this.commentSink = emitter,
                 FluxSink.OverflowStrategy.IGNORE)
                 .publish()
                 .autoConnect();
     }
-    
+
     @PostMapping("/comments")
     public Mono<String> addComment(Mono<Comment> newComment) {
         if (commentSink != null) {
             return newComment
-                    .map(x -> commentSink.next(MessageBuilder
-                            .withPayload(x)
+                    .map(comment -> commentSink.next(MessageBuilder
+                            .withPayload(comment)
                             .build())
                     )
-                    .then(Mono.just("redirect:"));
+                    .then(newComment)
+                    .flatMap(comment -> Mono.just("redirect:/pastes/" + comment.getPasteId()));
         } else {
-            return Mono.just("redirect:/");
+            return newComment
+                    .flatMap(comment -> Mono.just("redirect:/pastes/" + comment.getPasteId()));
         }
     }
-    
+
     @StreamEmitter
     public void emit(@Output(Source.OUTPUT) FluxSender output) {
         output.send(this.flux);
     }
-    
+
 }
