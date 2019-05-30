@@ -1,17 +1,19 @@
 package no.fasmer.pastebin.comments;
 
 import io.micrometer.core.instrument.MeterRegistry;
-import org.springframework.amqp.rabbit.annotation.Exchange;
-import org.springframework.amqp.rabbit.annotation.Queue;
-import org.springframework.amqp.rabbit.annotation.QueueBinding;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.Input;
+import org.springframework.cloud.stream.annotation.Output;
+import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
+@EnableBinding(CustomProcessor.class)
 public class CommentService {
 
     private final CommentWriterRepository commentWriterRepository;
@@ -22,19 +24,17 @@ public class CommentService {
         this.meterRegistry = meterRegistry;
     }
     
-    @RabbitListener(bindings = @QueueBinding(value = @Queue, exchange = @Exchange(value = "pastebin"), key = "comments.new"))
-    public void save(Comment newComment) {
+    @StreamListener
+    @Output(CustomProcessor.OUTPUT)
+    public void save(@Input(CustomProcessor.INPUT) Flux<Comment> newComments) {
         commentWriterRepository
-                .save(newComment)
-                .log("commentService-save")
-                .subscribe(comment -> {
-                    meterRegistry.counter("comments.consumed", "pasteId", comment.getPasteId()).increment();
+                .saveAll(newComments)
+                .flatMap(comment -> {
+                    meterRegistry
+                            .counter("comments.consumed", "pasteId", comment.getPasteId())
+                            .increment();
+                    return Mono.empty();
                 });
-    }
-    
-    @Bean
-    Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
     }
     
     @Bean
